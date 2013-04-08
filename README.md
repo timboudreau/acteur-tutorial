@@ -3,7 +3,10 @@ Acteur Tutorial
 
 This is a simple tutorial for [a simple framework](https://github.com/timboudreau/acteur) for writing simple, yet fast and scalable servers.
 
-To set expectations:  If you are looking for something to run servlets, this is not it.  Acteur is great for creating very lightweight, very scalable servers.  Such servers can be quite powerful.  But most servlet frameworks are heavily dependent on things like ThreadLocals, which pretty much guarantees they will never be usable in a truly asynchronous environment.
+To set expectations:  If you are looking for something to run servlets, this is not it.  Acteur is great for creating very lightweight, very scalable servers.  Such servers can be quite powerful.  In some ways the programming model is lower-level than servlets - one of the goals was to make it easy to do things like HTTP cache headers *really* right.  Its target is to provide a similar in flavor programming model to what you get with Node.js - which is also low-level.  It is easy to quickly build up fairly high-level reusable components on top of the framework.
+
+
+### Getting Started
 
 To start out with, we need to create a Maven project and add a dependency:
 
@@ -15,6 +18,8 @@ To start out with, we need to create a Maven project and add a dependency:
 	</dependency>
 
 You might want to check what the most recent version of acteur is and set the ``<version>`` tag to that.
+
+You'll want to add a "repositories" section to your ``pom.xml`` as well, [as described here](http://timboudreau.com/builds).
 
 Creating the Application
 ------------------------
@@ -109,6 +114,14 @@ SignerUpper is our first custom Acteur, which we'll create next to TodoListApp:
 	}
 
 [Event](http://timboudreau.com/builds/job/acteur/lastSuccessfulBuild/artifact/acteur/target/site/apidocs/com/mastfrog/acteur/Event.html) is the thing which represents the current HTTP request.
+
+[RespondWith](http://timboudreau.com/builds/job/acteur/lastSuccessfulBuild/artifact/acteur/target/site/apidocs/com/mastfrog/acteur/Acteur.RespondWith.html) is a subclass of [State](http://timboudreau.com/builds/job/acteur/lastSuccessfulBuild/artifact/acteur/target/site/apidocs/com/mastfrog/acteur/State.html).  An Acteur must either call ``setState()`` in its constructor, or override ``getState()``.  There are four states you will typically use, which are inner classes of ``Acteur`` and cannot be instantiated except there:
+
+  * ``RespondWith`` - finish the request, using a specific response code and optional String or Object message.  Object messages are converted to JSON.
+  * ``ConsumedLockedState`` - The current page will consume the current request;  optionally you can pass an array of objects for injection into subsequent acteurs.  For example, if you've authenticated a User, you might add a User object for later Acteurs to get in their constructor arguments and use
+  * ``ConsumedState`` - The request is not rejected, and the next Acteur in the chain should be given a shot at it
+  * ``RejectedState`` - This ``Page`` cannot respond to this request, but another may be able to - don't abort processing the request, but don't try any more Acteurs for the current page
+
 
 ## Running the Application
 
@@ -712,5 +725,5 @@ Cause this listener to be called back again some time after this item has been w
         }
     }
 
-The project as described up to this point can be found in the ``acteur-tutorial-v3`` project on GitHub.
+The project as described up to this point can be found in the ``acteur-tutorial-v4`` project on GitHub.
 
