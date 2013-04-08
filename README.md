@@ -11,7 +11,7 @@ To set expectations:  If you are looking for something to run servlets, this is 
 To start out with, we need to create a Maven project and add a dependency:
 
 	<dependency>
-	    <version>1,3,4</version>
+	    <version>1.3.4</version>
 	    <type>jar</type>
 	    <groupId>com.mastfrog</groupId>
 	    <artifactId>acteur</artifactId>
