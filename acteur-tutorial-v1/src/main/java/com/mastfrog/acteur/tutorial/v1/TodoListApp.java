@@ -17,6 +17,6 @@ public class TodoListApp extends Application {
             port = Integer.parseInt(args[0]);
         }
         ServerModule<TodoListApp> module = new ServerModule<>(TodoListApp.class);
-        module.start(port).await();
+        module.start(port);
     }
 }

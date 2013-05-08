@@ -1,6 +1,5 @@
-package com.mastfrog.acteur.tutorial.v1;
+package com.mastfrog.acteur.tutorial.v4;
 
-import com.google.inject.AbstractModule;
 import com.mastfrog.acteur.Application;
 import com.mastfrog.acteur.ImplicitBindings;
 import com.mastfrog.acteur.auth.Authenticator;
@@ -27,22 +26,22 @@ public class TodoListApp extends Application {
         if (args.length > 0) {
             port = Integer.parseInt(args[0]);
         }
-        ServerModule<TodoListApp> module = new ServerModule<>(TodoListApp.class);
-        module.add(new MongoModule("todo")
-                .bindCollection("users", "todoUsers")
-                .bindCollection("todo", "todo"));
-
-        module.add(new TodoListModule());
-
+        ServerModule<TodoListApp> module = new TodoListModule();
         module.start(port).await();
     }
-
-    static class TodoListModule extends AbstractModule {
-
+    
+    static class TodoListModule extends ServerModule<TodoListApp> {
+        TodoListModule() {
+            super(TodoListApp.class);
+        }
         @Override
         protected void configure() {
+            super.configure();
             bind(Authenticator.class).to(AuthenticatorImpl.class);
             bind(BasicDBObject.class).toProvider(ListItemsQuery.class);
+            install(new MongoModule("todo")
+                .bindCollection("users", "todoUsers")
+                .bindCollection("todo", "todo"));
         }
     }
 }

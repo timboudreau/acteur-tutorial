@@ -1,4 +1,4 @@
-package com.mastfrog.acteur.tutorial.v1;
+package com.mastfrog.acteur.tutorial.v4;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

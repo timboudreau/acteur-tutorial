@@ -1,4 +1,4 @@
-package com.mastfrog.acteur.tutorial.v1;
+package com.mastfrog.acteur.tutorial.v4;
 
 import com.google.inject.Inject;
 import com.mastfrog.acteur.ActeurFactory;
