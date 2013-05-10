@@ -27,21 +27,23 @@ public class TodoListApp extends Application {
             port = Integer.parseInt(args[0]);
         }
         ServerModule<TodoListApp> module = new TodoListModule();
+        module.add(new MongoModule("todo")
+                .bindCollection("users", "todoUsers")
+                .bindCollection("todo", "todo"));
         module.start(port).await();
     }
-    
+
     static class TodoListModule extends ServerModule<TodoListApp> {
+
         TodoListModule() {
             super(TodoListApp.class);
         }
+
         @Override
         protected void configure() {
             super.configure();
             bind(Authenticator.class).to(AuthenticatorImpl.class);
             bind(BasicDBObject.class).toProvider(ListItemsQuery.class);
-            install(new MongoModule("todo")
-                .bindCollection("users", "todoUsers")
-                .bindCollection("todo", "todo"));
         }
     }
 }
