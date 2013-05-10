@@ -29,6 +29,10 @@ public class TodoListAppTest {
     @Test
     @SuppressWarnings("unchecked")
     public void test(TestHarness harness, MongoHarness mongo) throws Throwable {
+        if (mongo.failed()) {
+            System.out.println("Mongodb could not start - not installed?");
+            return;
+        }
         String username = "joe" + Long.toString(System.currentTimeMillis(), 36);
         harness.put("users", username, "signup")
                 .addQueryPair("displayName", "Joe Blow")
