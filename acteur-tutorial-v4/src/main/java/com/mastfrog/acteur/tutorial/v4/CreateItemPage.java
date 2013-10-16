@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.mastfrog.acteur.Acteur;
 import com.mastfrog.acteur.ActeurFactory;
-import com.mastfrog.acteur.Event;
+import com.mastfrog.acteur.HttpEvent;
 import com.mastfrog.acteur.Page;
 import com.mastfrog.acteur.auth.AuthenticateBasicActeur;
 import com.mastfrog.acteur.util.Method;
@@ -31,7 +31,7 @@ final class CreateItemPage extends Page {
     }
     private static final class AddItemActeur extends Acteur {
         @Inject
-        AddItemActeur(BasicDBObject item, @Named("todo") DBCollection collection, User user, Event evt) {
+        AddItemActeur(BasicDBObject item, @Named("todo") DBCollection collection, User user, HttpEvent evt) {
             String owner = evt.getPath().getElement(1).toString();
             if (!owner.equals(user.name)) {
                 // For the future

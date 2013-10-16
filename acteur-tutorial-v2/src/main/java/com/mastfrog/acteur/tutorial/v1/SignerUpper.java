@@ -3,7 +3,7 @@ package com.mastfrog.acteur.tutorial.v1;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.mastfrog.acteur.Acteur;
-import com.mastfrog.acteur.Event;
+import com.mastfrog.acteur.HttpEvent;
 import com.mastfrog.acteur.util.PasswordHasher;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -19,7 +19,7 @@ import java.io.IOException;
 final class SignerUpper extends Acteur {
 
     @Inject
-    SignerUpper(Event evt, @Named("users") DBCollection users, PasswordHasher hasher) throws IOException {
+    SignerUpper(HttpEvent evt, @Named("users") DBCollection users, PasswordHasher hasher) throws IOException {
         String password = evt.getContentAsJSON(String.class);
         if (password.length() < 8) {
             setState(new RespondWith(HttpResponseStatus.BAD_REQUEST,

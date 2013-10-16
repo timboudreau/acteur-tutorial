@@ -2,7 +2,7 @@ package com.mastfrog.acteur.tutorial.v4;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.mastfrog.acteur.Event;
+import com.mastfrog.acteur.HttpEvent;
 import com.mongodb.BasicDBObject;
 import java.util.Map;
 import org.bson.types.ObjectId;
@@ -12,14 +12,14 @@ import org.bson.types.ObjectId;
  * @author Tim Boudreau
  */
 final class ListItemsQuery implements Provider<BasicDBObject> {
-    private final Provider<Event> eventProvider;
+    private final Provider<HttpEvent> eventProvider;
     @Inject
-    public ListItemsQuery(Provider<Event> eventProvider) {
+    public ListItemsQuery(Provider<HttpEvent> eventProvider) {
         this.eventProvider = eventProvider;
     }
     @Override
     public BasicDBObject get() {
-        Event event = eventProvider.get();
+        HttpEvent event = eventProvider.get();
         BasicDBObject result = new BasicDBObject();
         for (Map.Entry<String, String> e : event.getParametersAsMap().entrySet()) {
             switch(e.getKey()) {

@@ -2,7 +2,7 @@ package com.mastfrog.acteur.tutorial.v1;
 
 import com.google.inject.Inject;
 import com.mastfrog.acteur.Acteur;
-import com.mastfrog.acteur.Event;
+import com.mastfrog.acteur.HttpEvent;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import java.io.IOException;
 
@@ -14,7 +14,7 @@ import java.io.IOException;
 final class SignerUpper extends Acteur {
 
     @Inject
-    SignerUpper(Event evt) throws IOException {
+    SignerUpper(HttpEvent evt) throws IOException {
         String password = evt.getContentAsJSON(String.class);
         if (password.length() < 8) {
             setState(new RespondWith(HttpResponseStatus.BAD_REQUEST, "Password must be at least 8 characters"));
