@@ -5,6 +5,7 @@ import com.mastfrog.acteur.ImplicitBindings;
 import com.mastfrog.acteur.auth.Authenticator;
 import com.mastfrog.acteur.mongo.MongoModule;
 import com.mastfrog.acteur.server.ServerModule;
+import com.mastfrog.jackson.JacksonModule;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import java.io.IOException;
@@ -44,6 +45,7 @@ public class TodoListApp extends Application {
             super.configure();
             bind(Authenticator.class).to(AuthenticatorImpl.class);
             bind(BasicDBObject.class).toProvider(ListItemsQuery.class);
+            install(new JacksonModule());
         }
     }
 }
