@@ -37,7 +37,9 @@ public class TodoListAppTest {
         harness.put("users", username, "signup")
                 .addQueryPair("displayName", "Joe Blow")
                 .setBody("password", PLAIN_TEXT_UTF_8)
+                .log()
                 .go()
+                .await()
                 .assertStateSeen(StateType.Closed)
                 .assertStatus(OK);
 

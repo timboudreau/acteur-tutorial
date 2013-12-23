@@ -3,7 +3,7 @@ package com.mastfrog.acteur.tutorial.v4;
 import com.google.inject.Inject;
 import com.mastfrog.acteur.ActeurFactory;
 import com.mastfrog.acteur.Page;
-import com.mastfrog.acteur.util.Method;
+import com.mastfrog.acteur.headers.Method;
 
 /**
  *

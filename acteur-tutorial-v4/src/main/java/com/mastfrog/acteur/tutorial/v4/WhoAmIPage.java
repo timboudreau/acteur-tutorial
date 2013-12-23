@@ -8,7 +8,7 @@ import com.mastfrog.acteur.Acteur;
 import com.mastfrog.acteur.ActeurFactory;
 import com.mastfrog.acteur.Page;
 import com.mastfrog.acteur.auth.AuthenticateBasicActeur;
-import com.mastfrog.acteur.util.Method;
+import com.mastfrog.acteur.headers.Method;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
