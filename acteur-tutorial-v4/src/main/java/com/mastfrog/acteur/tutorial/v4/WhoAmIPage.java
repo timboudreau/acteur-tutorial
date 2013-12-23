@@ -25,7 +25,7 @@ public class WhoAmIPage extends Page {
         add(af.matchPath(WHO_AM_I_PATTERN));
         add(AuthenticateBasicActeur.class);
         add(WhoAmIActeur.class);
-        getReponseHeaders().setContentType(MediaType.JSON_UTF_8);
+        getResponseHeaders().setContentType(MediaType.JSON_UTF_8);
     }
 
     private static final class WhoAmIActeur extends Acteur {
