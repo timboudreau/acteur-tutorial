@@ -37,6 +37,11 @@ final class AuthenticatorImpl implements Authenticator {
                         (String) userRecord.get("displayName"));
                 return new Object[]{user};
             }
+        } else {
+            // Security - ensure someone can't probe for what user ids are
+            // valid by seeing that requests for non-existent users take less
+            //time
+            hasher.checkPassword("abcedefg", credentials.password);
         }
         return null;
     }

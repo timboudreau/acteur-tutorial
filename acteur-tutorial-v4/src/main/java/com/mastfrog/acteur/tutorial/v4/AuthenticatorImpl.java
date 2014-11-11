@@ -16,6 +16,7 @@ import java.io.IOException;
  * @author Tim Boudreau
  */
 final class AuthenticatorImpl implements Authenticator {
+
     private final DBCollection users;
     private final PasswordHasher hasher;
 
@@ -32,11 +33,17 @@ final class AuthenticatorImpl implements Authenticator {
         if (userRecord != null) {
             String password = (String) userRecord.get("password");
             if (hasher.checkPassword(credentials.password, password)) {
-                User user = new User(userRecord.get("_id") + "", 
-                        (String) userRecord.get("name"), 
+                User user = new User(userRecord.get("_id") + "",
+                        (String) userRecord.get("name"),
                         (String) userRecord.get("displayName"));
+                System.out.println("RETURN USER " + userRecord);
                 return new Object[]{user};
             }
+        } else {
+            // Security - ensure someone can't probe for what user ids are
+            // valid by seeing that requests for non-existent users take less
+            //time
+            hasher.checkPassword("abcedefg", credentials.password);
         }
         return null;
     }

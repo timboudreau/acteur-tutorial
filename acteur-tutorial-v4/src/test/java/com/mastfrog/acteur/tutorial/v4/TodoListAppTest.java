@@ -1,14 +1,16 @@
 package com.mastfrog.acteur.tutorial.v4;
 
 import static com.google.common.net.MediaType.PLAIN_TEXT_UTF_8;
-import com.google.inject.AbstractModule;
+import com.mastfrog.acteur.annotations.GenericApplicationModule;
 import com.mastfrog.acteur.mongo.MongoHarness;
-import com.mastfrog.acteur.mongo.MongoModule;
-import com.mastfrog.acteur.tutorial.v4.TodoListAppTest.MM;
+import com.mastfrog.acteur.tutorial.v4.TodoListAppTest.GAM;
 import com.mastfrog.giulius.tests.GuiceRunner;
 import com.mastfrog.giulius.tests.TestWith;
 import com.mastfrog.netty.http.client.StateType;
 import com.mastfrog.netty.http.test.harness.TestHarness;
+import com.mastfrog.netty.http.test.harness.TestHarnessModule;
+import com.mastfrog.settings.Settings;
+import com.mongodb.DBCursor;
 import static io.netty.handler.codec.http.HttpResponseStatus.CREATED;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import java.util.Arrays;
@@ -23,8 +25,21 @@ import org.junit.runner.RunWith;
  * @author Tim Boudreau
  */
 @RunWith(GuiceRunner.class)
-@TestWith({TodoListApp.TodoListModule.class, MongoHarness.Module.class, MM.class})
+@TestWith({TodoListApp.class, MongoHarness.Module.class, TestHarnessModule.class, GAM.class})
 public class TodoListAppTest {
+
+    static class GAM extends GenericApplicationModule {
+
+        public GAM(Settings settings) {
+            super(settings);
+        }
+
+        @Override
+        protected void configure() {
+            super.configure();
+            scope.bindTypes(binder(), User.class, DBCursor.class);
+        }
+    }
 
     @Test
     @SuppressWarnings("unchecked")
@@ -52,7 +67,7 @@ public class TodoListAppTest {
                 .assertStatus(CREATED)
                 .content(Map.class);
 
-        Map[] items = (Map[]) harness
+        Map[] items = harness
                 .get("users", username, "items")
                 .basicAuthentication(username, "password")
                 .addQueryPair("creator", (String) item.get("creator"))
@@ -65,14 +80,4 @@ public class TodoListAppTest {
         assertEquals(1, items.length);
     }
 
-    static class MM extends AbstractModule {
-
-        @Override
-        protected void configure() {
-            install(new MongoModule("todo")
-                    .bindCollection("users", "todoUsers")
-                    .bindCollection("todo", "todo"));
-        }
-
-    }
 }

@@ -19,6 +19,7 @@ import org.openide.util.lookup.ServiceProvider;
  */
 @ServiceProvider(service = JacksonConfigurer.class)
 public class JacksonConfiguration implements JacksonConfigurer {
+
     @Override
     public ObjectMapper configure(ObjectMapper om) {
         om.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
@@ -30,6 +31,7 @@ public class JacksonConfiguration implements JacksonConfigurer {
     }
 
     private static class ObjectMapperSerializer extends JsonSerializer<ObjectId> {
+
         @Override
         public Class<ObjectId> handledType() {
             return ObjectId.class;

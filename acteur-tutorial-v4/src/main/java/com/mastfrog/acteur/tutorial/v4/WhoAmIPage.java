@@ -2,36 +2,30 @@ package com.mastfrog.acteur.tutorial.v4;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.net.MediaType;
 import com.google.inject.Inject;
 import com.mastfrog.acteur.Acteur;
-import com.mastfrog.acteur.ActeurFactory;
-import com.mastfrog.acteur.Page;
-import com.mastfrog.acteur.auth.AuthenticateBasicActeur;
-import com.mastfrog.acteur.headers.Method;
+import com.mastfrog.acteur.annotations.HttpCall;
+import static com.mastfrog.acteur.headers.Method.GET;
+import static com.mastfrog.acteur.headers.Method.HEAD;
+import com.mastfrog.acteur.preconditions.Authenticated;
+import com.mastfrog.acteur.preconditions.Methods;
+import com.mastfrog.acteur.preconditions.Path;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
  *
  * @author Tim Boudreau
  */
-public class WhoAmIPage extends Page {
+@HttpCall
+@Path("who")
+@Methods({GET, HEAD})
+@Authenticated
+public class WhoAmIPage extends Acteur {
 
     private static final String WHO_AM_I_PATTERN = "^who";
 
     @Inject
-    WhoAmIPage(ActeurFactory af) {
-        add(af.matchMethods(Method.GET, Method.HEAD));
-        add(af.matchPath(WHO_AM_I_PATTERN));
-        add(AuthenticateBasicActeur.class);
-        add(WhoAmIActeur.class);
-        getResponseHeaders().setContentType(MediaType.JSON_UTF_8);
-    }
-
-    private static final class WhoAmIActeur extends Acteur {
-        @Inject
-        WhoAmIActeur(User user, ObjectMapper mapper) throws JsonProcessingException {
-            setState(new RespondWith(HttpResponseStatus.OK, mapper.writeValueAsString(user)));
-        }
+    WhoAmIPage(User user, ObjectMapper mapper) throws JsonProcessingException {
+        setState(new RespondWith(HttpResponseStatus.OK, mapper.writeValueAsString(user)));
     }
 }

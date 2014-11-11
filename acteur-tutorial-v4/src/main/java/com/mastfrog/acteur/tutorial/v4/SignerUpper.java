@@ -4,6 +4,12 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.mastfrog.acteur.Acteur;
 import com.mastfrog.acteur.HttpEvent;
+import com.mastfrog.acteur.annotations.HttpCall;
+import static com.mastfrog.acteur.headers.Method.PUT;
+import com.mastfrog.acteur.preconditions.Methods;
+import com.mastfrog.acteur.preconditions.PathRegex;
+import com.mastfrog.acteur.preconditions.RequiredUrlParameters;
+import static com.mastfrog.acteur.tutorial.v4.SignerUpper.SIGN_UP_PATTERN;
 import com.mastfrog.acteur.util.PasswordHasher;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -17,7 +23,13 @@ import org.joda.time.DateTimeUtils;
  *
  * @author Tim Boudreau
  */
+@HttpCall
+@Methods(PUT)
+@PathRegex(SIGN_UP_PATTERN)
+@RequiredUrlParameters("displayName")
 final class SignerUpper extends Acteur {
+
+    static final String SIGN_UP_PATTERN = "^users/(.*?)/signup$";
 
     @Inject
     SignerUpper(HttpEvent evt, @Named("users") DBCollection users, PasswordHasher hasher) throws IOException {
@@ -33,7 +45,7 @@ final class SignerUpper extends Acteur {
         BasicDBObject query = new BasicDBObject("name", userName);
         DBObject result = users.findOne(query);
         if (result != null) {
-            setState(new RespondWith(HttpResponseStatus.CONFLICT, "A user named " 
+            setState(new RespondWith(HttpResponseStatus.CONFLICT, "A user named "
                     + userName + " exists\n"));
         } else {
             query.put("password", hasher.encryptPassword(password));
