@@ -6,6 +6,7 @@ import com.mastfrog.acteur.Acteur;
 import com.mastfrog.acteur.HttpEvent;
 import com.mastfrog.acteur.annotations.HttpCall;
 import static com.mastfrog.acteur.headers.Method.PUT;
+import com.mastfrog.acteur.preconditions.InjectRequestBodyAs;
 import com.mastfrog.acteur.preconditions.Methods;
 import com.mastfrog.acteur.preconditions.PathRegex;
 import com.mastfrog.acteur.preconditions.RequiredUrlParameters;
@@ -13,6 +14,7 @@ import static com.mastfrog.acteur.tutorial.v1.SignerUpper.SIGN_UP_PATTERN;
 import com.mastfrog.acteur.util.PasswordHasher;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import java.io.IOException;
@@ -22,17 +24,17 @@ import java.io.IOException;
  *
  * @author Tim Boudreau
  */
-@HttpCall
+@HttpCall(scopeTypes = {User.class, DBCursor.class})
 @Methods(PUT)
 @PathRegex(SIGN_UP_PATTERN)
 @RequiredUrlParameters("displayName")
+@InjectRequestBodyAs(String.class)
 final class SignerUpper extends Acteur {
 
     static final String SIGN_UP_PATTERN = "^users/(.*?)/signup$";
 
     @Inject
-    SignerUpper(HttpEvent evt, @Named("users") DBCollection users, PasswordHasher hasher) throws IOException {
-        String password = evt.getContentAsJSON(String.class);
+    SignerUpper(HttpEvent evt, String password, @Named("users") DBCollection users, PasswordHasher hasher) throws IOException {
         if (password.length() < 8) {
             setState(new RespondWith(HttpResponseStatus.BAD_REQUEST,
                     "Password must be at least 8 characters"));

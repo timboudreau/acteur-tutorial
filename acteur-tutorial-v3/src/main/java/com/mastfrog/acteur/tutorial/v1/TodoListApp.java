@@ -4,7 +4,6 @@ import com.google.inject.AbstractModule;
 import com.mastfrog.acteur.auth.Authenticator;
 import com.mastfrog.acteur.mongo.MongoModule;
 import com.mastfrog.acteur.server.ServerBuilder;
-import com.mongodb.DBCursor;
 import java.io.IOException;
 
 public class TodoListApp extends AbstractModule {
@@ -16,7 +15,6 @@ public class TodoListApp extends AbstractModule {
         }
         new ServerBuilder()
                 .add(new TodoListApp())
-                .withType(User.class, DBCursor.class)
                 .build().start(port).await();
     }
 
