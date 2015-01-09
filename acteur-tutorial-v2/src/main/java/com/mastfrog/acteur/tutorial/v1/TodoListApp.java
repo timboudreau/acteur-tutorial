@@ -15,6 +15,7 @@ public class TodoListApp {
             port = Integer.parseInt(args[0]);
         }
         ServerControl control = new ServerBuilder()
+                .enableHelp()
                 .add(new MongoModule("todo")
                         .bindCollection("users", "todoUsers")
                         .bindCollection("todo", "todo")).build().start(port);

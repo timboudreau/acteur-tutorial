@@ -11,7 +11,10 @@ public class TodoListApp {
         if (args.length > 0) {
             port = Integer.parseInt(args[0]);
         }
-        ServerControl control = new ServerBuilder().build().start(port);
+        ServerControl control = new ServerBuilder()
+                .enableHelp()
+                .build()
+                .start(port);
         control.await();
     }
 }

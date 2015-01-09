@@ -11,7 +11,7 @@ To set expectations:  If you are looking for something to run servlets, this is 
 To start out with, we need to create a Maven project and add a dependency:
 ```xml
 	<dependency>
-	    <version>1.3.4</version>
+	    <version>1.5.4</version>
 	    <type>jar</type>
 	    <groupId>com.mastfrog</groupId>
 	    <artifactId>acteur</artifactId>
@@ -27,102 +27,84 @@ Creating the Application
 To start out with, we need a main class - acteur servers are *simple Java applications* which you run by running them.  It will consist of a subclass of ``Application`` and a ``main()`` method:
 
 ```java
-	public class TodoListApp extends Application {
-	    
-	    TodoListApp() {
-		add(SignUpPage.class);
-                add(Application.helpPageType());
-	    }
+import com.mastfrog.acteur.server.ServerBuilder;
+import com.mastfrog.acteur.util.ServerControl;
+import java.io.IOException;
 
-	    public static void main(String[] args) throws IOException, InterruptedException {
-		int port = 8134;
-		if (args.length > 0) {
-		    port = Integer.parseInt(args[0]);
-		}
-		ServerModule<TodoListApp> module = new ServerModule<>(TodoListApp.class);
-		module.start(port).await();
-	    }
-	}
-```
-This doesn't do much that is exciting - it just takes an optional command-line argument for what port to run on, starts a server on port 8134 or whatever it was passed, and waits for it to exit.  ``ServerModule`` is part of the Acteur library, and is a Guice module; it takes care of initializing Guice with some reasonable defaults for the case of simple projects.  In a more complicated application we might initialize Guice manually.
+public class TodoListApp {
 
-You may notice the line
-```java
-        add(Application.helpPageType());
-```
-This adds an optional default "help" page which gives details about the Web API calls this server supports.
-
-### Creating a "Page"
-
-The application consists of a single "page" (really a thing that can respond to HTTP requests - but everybody understands what "page" means).  We can write that now:
-```java
-
-    public class SignUpPage extends Page {
-      private static final String SIGN_UP_PATTERN = "^users/(.*?)/signup$";
-
-      @Inject
-      SignUpPage(ActeurFactory af) {
-```
-The body of the constructor is where all of the action in a page is.  In Acteur, constructors do most of the heavy-lifting.  In a Page, you ``add`` a bunch of ``Acteur`` or ``Class<Acteur>`` objects to the page.  When a request comes in, they are called in order.  Each one has a chance to
-
-  * Reject the request and stop that page from trying to process it further
-  * Provisionally accept the request, and perhaps some objects to be injected into the next Acteur in the list
-  * Respond to the request, finishing it
-
-We'll add a few Acteurs to our page, one by one:
-```java
-        add(af.matchMethods(Method.PUT));
-```
-[ActeurFactory](http://timboudreau.com/builds/job/acteur/lastSuccessfulBuild/artifact/acteur/target/site/apidocs/com/mastfrog/acteur/ActeurFactory.html) provides a bunch of standard Acteurs for validating requests, such as:
-
-  * Matching methods using certain HTTP methods
-  * Requiring certain URL parameters to be present or not present
-  * Matching the URL path against regular expressions
-
-as well as things like returning "Not Modified" responses in response to HTTP caching headers (one of the things Acteur sets out to do is make it easy to do caching headers right easily and by default).
-
-Next we'll match against the regular expression defined above.  That looks like:
-```java
-        add(af.matchPath(SIGN_UP_PATTERN));
-```
-Note here that if we want to, we can set a base URL for the application, and our code will not need to change - so it's easy to take an Acteur application and reverse-proxy it on a certain path as part of a larger web site.
-
-We want users to have a human-readable display name, so we'll requre that here too:
-```java
-        add(af.requireParameters("displayName"));
-```
-Next comes our actual business logic.  For now, we won't really save the user information anywhere, we'll just pretend to and say OK:
-```java
-        add(SignerUpper.class);
+    public static void main(String[] args) throws IOException, InterruptedException {
+        int port = 8134;
+        if (args.length > 0) {
+            port = Integer.parseInt(args[0]);
+        }
+        ServerControl control = new ServerBuilder().build().start(port);
+        control.await();
     }
+}
 ```
+This doesn't do much that is exciting - it just takes an optional command-line argument for what port to run on, starts a server on port 8134 or whatever it was passed, and waits for it to exit.  ``ServerBuilder`` hides the complexity of setting up Guice modules and building an injector.
+``ServerControl`` allows you to cleanly shut down a server you have started.
+
+
 ### Writing an Acteur
 
-SignerUpper is our first custom Acteur, which we'll create next to TodoListApp:
-```java
-	final class SignerUpper extends Acteur {
+SignerUpper is our first Acteur, which we'll add next to TodoListApp.  This Acteur is an *HTTP endpoint*, meaning it specifies a URL path
+or other information that the framework will use to decide if it should handle the incoming request.  The `@HttpCall` annotation marks
+it as such.  Additional annotations place constraints on when it will be called, versus either rejecting the request or moving on
+to try another endpoint.
 
-	    @Inject
-	    SignerUpper(Event evt) throws IOException {
-		String password = evt.getContentAsJSON(String.class);
-		if (password.length() < 8) {
-		    setState(new RespondWith(HttpResponseStatus.BAD_REQUEST, "Password must be at least 8 characters"));
-		    return;
-		}
-		String userName = evt.getPath().getElement(1).toString();
-		setState(new RespondWith(HttpResponseStatus.OK, "Congratulations, " 
-		        + userName + ", your password is " + password + "\n"));
-	    }
-	}
+```java
+@HttpCall
+@PathRegex(SIGN_UP_PATTERN)
+@RequiredUrlParameters("displayName")
+@Methods(PUT)
+@InjectRequestBodyAs(String.class)
+final class SignerUpper extends Acteur {
+
+    static final String SIGN_UP_PATTERN = "^users/(.*?)/signup$";
+
+    @Inject
+    SignerUpper(String password, Path path) throws IOException {
+        if (password.length() < 8) {
+            setState(new RespondWith(HttpResponseStatus.BAD_REQUEST, "Password must be at least 8 characters"));
+            return;
+        }
+        String userName = path.getElement(1).toString();
+        ok("Congratulations, " + userName + ", your password is " + password + "\n");
+    }
+}
+
+In this case ask for the request body to be injected into our `SignerUpper` as a string.  We could also define a custom
+data type that is deserializable from JSON with Jackson and use that instead.
+
+Acteurs can be endpoints, or they can just contribute some portion of processing the request - in fact, each annotation
+on this class actually specifies an Acteur inside the framework which will be called (and can potentially reject the request)
+before ours gets called.  That means you can cleanly separate *validation logic* that determines if the input is usable
+from *business logic* that does something with the input.
+
+You can supply your own annotations and a `PageAnnotationHandler` to convert them to Acteurs for this sort of validation;
+the framework supports a lot out of the box.
+
+The call to `ok()` sets the *state* of the acteur.  Every Acteur returns a state.  If constructors could have a return
+type, the state would be the return value - that's the best way to think of it.  That line could also have been written as
+
+```java
+setState(new RespondWith(HttpResponseStatus.OK, "Congratulations, " + userName + ", your password is " + password + "\n"));
 ```
-[Event](http://timboudreau.com/builds/job/acteur/lastSuccessfulBuild/artifact/acteur/target/site/apidocs/com/mastfrog/acteur/Event.html) is the thing which represents the current HTTP request.
 
 [RespondWith](http://timboudreau.com/builds/job/acteur/lastSuccessfulBuild/artifact/acteur/target/site/apidocs/com/mastfrog/acteur/Acteur.RespondWith.html) is a subclass of [State](http://timboudreau.com/builds/job/acteur/lastSuccessfulBuild/artifact/acteur/target/site/apidocs/com/mastfrog/acteur/State.html).  An Acteur must either call ``setState()`` in its constructor, or override ``getState()``.  There are four states you will typically use, which are inner classes of ``Acteur`` and cannot be instantiated except there:
 
   * ``RespondWith`` - finish the request, using a specific response code and optional String or Object message.  Object messages are converted to JSON.
   * ``ConsumedLockedState`` - The current page will consume the current request;  optionally you can pass an array of objects for injection into subsequent acteurs.  For example, if you've authenticated a User, you might add a User object for later Acteurs to get in their constructor arguments and use
   * ``ConsumedState`` - The request is not rejected, and the next Acteur in the chain should be given a shot at it
-  * ``RejectedState`` - This ``Page`` cannot respond to this request, but another may be able to - don't abort processing the request, but don't try any more Acteurs for the current page
+  * ``RejectedState`` - This ``Page`` cannot respond to this request, but another may be able to - don't abort processing the request, but don't try any more Acteurs for the current page.
+
+#### Pages
+
+Earlier versions of this tutorial had you subclass `Page`.  The `@HttpCall` annotation causes this class to be generated for you.  You
+may still use it in a few specific cases, but usually it is less coding to write Acteurs with annnotations and let the framework
+do the work.
 
 
 ## Running the Application
@@ -174,7 +156,9 @@ and we should also verify that it won't work without a display name parameter:
 
 	Missing URL parameter 'displayName'
 
-We can also test out the help page by going to [localhost:8134/help?html=true](view-source:http://localhost:8134/help?html=true) in a browser.
+We can also test out the help page by going to [localhost:8134/help?html=true](view-source:http://localhost:8134/help?html=true) in a browser.  That's enabled by calling `enableHelp()` on our `ServerBuilder` - it uses the Page and Acteur classes, and their annotations to generate a generic HTML
+help page, be default findable at the URL `/help` - this makes web APIs developed with Acteur self-documenting.  Add the `@Description` page to your
+acteurs to give them friendly descriptions.
 
 The project as described up to this point can be found in the ``acteur-tutorial-v1`` project on GitHub.
 
@@ -189,7 +173,7 @@ Maven project's ``pom.xml``:
         <dependency>
             <groupId>com.mastfrog</groupId>
             <artifactId>acteur-mongo</artifactId>
-            <version>${project.version}</version>
+            <version>${mastfrog.version}</version>
         </dependency>
 ```
 If you don't have MongoDB installed somewhere, install it locally (or set up an account with a vendor which offers MongoDB - there are a few).  The following script is handy on Unix-like OS's to start MongoDB for testing applications, with some command-line switches to keep it from allocating giant files:
@@ -201,6 +185,8 @@ If you don't have MongoDB installed somewhere, install it locally (or set up an 
 	mongod --dbpath /tmp/mongodb --nojournal --smallfiles --nssize 1 --noprealloc --slowms 5
 ```
 Go ahead and start MongoDB now, and the rest of the tutorial will assume it is running.
+
+<h1>************ UNEDITED CONTENT FOLLOWS **********</h1>
 
 The second thing we'll do is change the way we're initializing our application a little bit, in ``TodoListApp.main()`` - after assigning the ``module`` variable, add this:
 ```java

@@ -34,7 +34,7 @@ final class SignerUpper extends Acteur {
             return;
         }
         String userName = path.getElement(1).toString();
-        setState(new RespondWith(HttpResponseStatus.OK, "Congratulations, "
-                + userName + ", your password is " + password + "\n"));
+        ok("Congratulations, "
+                + userName + ", your password is " + password + "\n");
     }
 }

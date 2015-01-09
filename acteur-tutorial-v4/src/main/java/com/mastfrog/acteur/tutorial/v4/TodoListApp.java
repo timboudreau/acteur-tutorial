@@ -17,6 +17,7 @@ public class TodoListApp extends AbstractModule {
             port = Integer.parseInt(args[0]);
         }
         new ServerBuilder()
+                .enableHelp()
                 .add(new TodoListApp())
                 .withType(User.class, DBCursor.class)
                 .build().start(port).await();
