@@ -36,8 +36,7 @@ final class SignerUpper extends Acteur {
     @Inject
     SignerUpper(HttpEvent evt, String password, @Named("users") DBCollection users, PasswordHasher hasher) throws IOException {
         if (password.length() < 8) {
-            setState(new RespondWith(HttpResponseStatus.BAD_REQUEST,
-                    "Password must be at least 8 characters"));
+            badRequest("Password must be at least 8 characters");
             return;
         }
         String userName = evt.getPath().getElement(1).toString();
@@ -46,14 +45,14 @@ final class SignerUpper extends Acteur {
         BasicDBObject query = new BasicDBObject("name", userName);
         DBObject result = users.findOne(query);
         if (result != null) {
-            setState(new RespondWith(HttpResponseStatus.CONFLICT, "A user named "
-                    + userName + " exists\n"));
+            reply(HttpResponseStatus.CONFLICT, "A user named "
+                    + userName + " exists\n");
         } else {
             query.put("password", hasher.encryptPassword(password));
             query.put("displayName", displayName);
             users.save(query);
-            setState(new RespondWith(HttpResponseStatus.OK, "Congratulations, "
-                    + userName + ", you are  " + query.get("_id") + "\n"));
+            ok("Congratulations, "
+                    + userName + ", you are  " + query.get("_id") + "\n");
         }
     }
 }

@@ -33,15 +33,15 @@ public class ReadItemsPage extends Acteur {
         String owner = evt.getPath().getElement(1).toString();
         if (!owner.equals(user.name)) {
             // For the future
-            setState(new RespondWith(HttpResponseStatus.FORBIDDEN, user.name
-                    + " cannot add items belonging to " + owner));
+            reply(HttpResponseStatus.FORBIDDEN, user.name
+                    + " cannot add items belonging to " + owner);
         }
         DBCursor cursor = collection.find(query);
         if (!cursor.hasNext()) {
             // No items, bail here
-            setState(new RespondWith(HttpResponseStatus.OK, "[]\n"));
+            reply(HttpResponseStatus.OK, "[]\n");
         } else {
-            setState(new ConsumedLockedState(cursor));
+            next(cursor);
         }
     }
 }

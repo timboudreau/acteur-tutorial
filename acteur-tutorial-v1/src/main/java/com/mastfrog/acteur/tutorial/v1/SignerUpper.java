@@ -10,7 +10,6 @@ import com.mastfrog.acteur.preconditions.PathRegex;
 import com.mastfrog.acteur.preconditions.RequiredUrlParameters;
 import static com.mastfrog.acteur.tutorial.v1.SignerUpper.SIGN_UP_PATTERN;
 import com.mastfrog.url.Path;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import java.io.IOException;
 
 /**
@@ -30,11 +29,10 @@ final class SignerUpper extends Acteur {
     @Inject
     SignerUpper(String password, Path path) throws IOException {
         if (password.length() < 8) {
-            setState(new RespondWith(HttpResponseStatus.BAD_REQUEST, "Password must be at least 8 characters"));
+            badRequest("Password must be at least 8 characters");
             return;
         }
         String userName = path.getElement(1).toString();
-        ok("Congratulations, "
-                + userName + ", your password is " + password + "\n");
+        ok("Congratulations, " + userName + ", your password is " + password + "\n");
     }
 }
