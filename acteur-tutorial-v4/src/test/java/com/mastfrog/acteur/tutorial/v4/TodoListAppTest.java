@@ -55,7 +55,7 @@ public class TodoListAppTest {
                 .log()
                 .go()
                 .await()
-                .assertStateSeen(StateType.Closed)
+                .assertStateSeen(StateType.FullContentReceived)
                 .assertStatus(OK);
 
         Map<String, Object> item = (Map<String, Object>) harness
@@ -63,7 +63,7 @@ public class TodoListAppTest {
                 .addQueryPair("title", "Do stuff")
                 .basicAuthentication(username, "password")
                 .go()
-                .assertStateSeen(StateType.Closed)
+                .assertStateSeen(StateType.FullContentReceived)
                 .assertStatus(CREATED)
                 .content(Map.class);
 
