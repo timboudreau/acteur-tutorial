@@ -1,5 +1,6 @@
-<?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>acteur-tutorial-parent</artifactId>
     <parent>
@@ -16,9 +17,6 @@
         <module>acteur-tutorial-v3</module>
         <module>acteur-tutorial-v4</module>
     </modules>
-    <properties>
-        <mastfrog.version>${project.version}</mastfrog.version>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -28,7 +26,6 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>acteur</artifactId>
-            <type>jar</type>
         </dependency>
     </dependencies>
     <build>
