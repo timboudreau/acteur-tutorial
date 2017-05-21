@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.mastfrog</groupId>
         <artifactId>acteur-tutorial-parent</artifactId>
-        <version>1.6.5</version>
+        <version>1.7.0-dev</version>
     </parent>
     <artifactId>acteur-tutorial-v4</artifactId>
     <name>acteur-tutorial-v4</name>
