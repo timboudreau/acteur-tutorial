@@ -14,7 +14,7 @@
             <artifactId>mongo-java-driver</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.mastfrog</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>acteur-mongo</artifactId>
         </dependency>
         <dependency>

@@ -10,7 +10,7 @@
     <name>acteur-tutorial-v4</name>
     <dependencies>
         <dependency>
-            <groupId>com.mastfrog</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>jackson</artifactId>
         </dependency>
         <dependency>
@@ -18,15 +18,15 @@
             <artifactId>mongo-java-driver</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.mastfrog</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>acteur-mongo</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.mastfrog</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>acteur-headers</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.mastfrog</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>acteur-mongo</artifactId>
             <version>${mastfrog.version}</version>
             <scope>test</scope>
