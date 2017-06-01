@@ -13,11 +13,12 @@ import com.mastfrog.acteur.preconditions.Methods;
 import com.mastfrog.acteur.preconditions.PathRegex;
 import com.mastfrog.acteur.preconditions.RequiredUrlParameters;
 import static com.mastfrog.acteur.tutorial.v4.CreateItemPage.ITEM_PATTERN;
+import com.mastfrog.util.time.TimeUtil;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import java.time.ZonedDateTime;
 import org.bson.types.ObjectId;
-import org.joda.time.DateTimeUtils;
 
 /**
  *
@@ -41,7 +42,7 @@ final class CreateItemPage extends Acteur {
             setState(new RespondWith(HttpResponseStatus.FORBIDDEN, user.name
                     + " cannot add items belonging to " + owner));
         }
-        long now = DateTimeUtils.currentTimeMillis();
+        long now = System.currentTimeMillis();
         item.put("creator", new ObjectId(user.id));
         item.put("lastModified", now);
         item.put("created", now);

@@ -16,7 +16,6 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import java.io.IOException;
-import org.joda.time.DateTimeUtils;
 
 /**
  * New user sign-up.
@@ -49,7 +48,7 @@ final class SignerUpper extends Acteur {
         } else {
             query.put("password", hasher.encryptPassword(password));
             query.put("displayName", displayName);
-            query.put("lastModified", DateTimeUtils.currentTimeMillis());
+            query.put("lastModified", System.currentTimeMillis());
             users.save(query);
             ok("Congratulations, "+ userName + ", you are  " 
                     + query.get("_id") + "\n");
