@@ -32,13 +32,13 @@ final class SignerUpper extends Acteur {
 
     @Inject
     SignerUpper(HttpEvent evt, @Named("users") DBCollection users, PasswordHasher hasher) throws IOException {
-        String password = evt.getContentAsJSON(String.class);
+        String password = evt.jsonContent(String.class);
         if (password.length() < 8) {
             badRequest("Password must be at least 8 characters");
             return;
         }
-        String userName = evt.getPath().getElement(1).toString();
-        String displayName = evt.getParameter("displayName");
+        String userName = evt.path().getElement(1).toString();
+        String displayName = evt.urlParameter("displayName");
 
         BasicDBObject query = new BasicDBObject("name", userName);
         DBObject result = users.findOne(query);

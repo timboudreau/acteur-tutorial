@@ -30,7 +30,7 @@ public class ReadItemsPage extends Acteur {
 
     @Inject
     ReadItemsPage(@Named("todo") DBCollection collection, HttpEvent evt, User user, BasicDBObject query) {
-        String owner = evt.getPath().getElement(1).toString();
+        String owner = evt.path().getElement(1).toString();
         if (!owner.equals(user.name)) {
             // For the future
             reply(HttpResponseStatus.FORBIDDEN, user.name

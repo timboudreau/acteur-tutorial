@@ -24,7 +24,7 @@ final class ListItemsQuery implements Provider<BasicDBObject> {
     public BasicDBObject get() {
         HttpEvent event = eventProvider.get();
         BasicDBObject result = new BasicDBObject();
-        for (Map.Entry<String, String> e : event.getParametersAsMap().entrySet()) {
+        for (Map.Entry<String, String> e : event.urlParametersAsMap().entrySet()) {
             switch (e.getKey()) {
                 case "_id":
                 case "creator":

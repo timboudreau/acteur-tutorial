@@ -36,7 +36,7 @@ final class CreateItemPage extends Acteur {
 
     @Inject
     CreateItemPage(BasicDBObject item, @Named("todo") DBCollection collection, User user, HttpEvent evt) {
-        String owner = evt.getPath().getElement(1).toString();
+        String owner = evt.path().getElement(1).toString();
         if (!owner.equals(user.name)) {
             // For the future
             setState(new RespondWith(HttpResponseStatus.FORBIDDEN, user.name
