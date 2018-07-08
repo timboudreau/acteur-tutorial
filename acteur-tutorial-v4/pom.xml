@@ -77,6 +77,54 @@
                     <reuseForks>false</reuseForks>
                 </configuration>
             </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <!--<fork>true</fork>-->
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <debug>true</debug>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <compilerArgument>${maven.compiler.argument}</compilerArgument>
+                    <compilerArgument>-Xlint:unchecked</compilerArgument>
+                    <compilerArgument>-Xdoclint:none</compilerArgument>
+                    <compilerArgument>-verbose</compilerArgument>
+                    <compilerArgument>-XprintRounds</compilerArgument>
+                    <compilerArgument>-XprintProcessorInfo</compilerArgument>
+                    <compilerArgument>-Xdiags:verbose</compilerArgument>
+                    <showDeprecation>true</showDeprecation>
+                    <showWarnings>true</showWarnings>
+                    <!--<forceJavacCompilerUse>true</forceJavacCompilerUse>-->
+                    <annotationProcessorPaths>
+                        <annotationProcessorPath>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>annotation-processors</artifactId>
+                            <version>${mastfrog.version}</version>
+                        </annotationProcessorPath>
+                        <annotationProcessorPath>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>injection-reflection-indexer</artifactId>
+                            <version>${mastfrog.version}</version>
+                        </annotationProcessorPath>
+                        <annotationProcessorPath>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>giulius-annotation-processors</artifactId>
+                            <version>${mastfrog.version}</version>
+                        </annotationProcessorPath>
+<!--                        <annotationProcessorPath>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>numble</artifactId>
+                            <version>${mastfrog.version}</version>
+                        </annotationProcessorPath>
+-->                        <annotationProcessorPath>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>acteur-annotation-processors</artifactId>
+                            <version>${mastfrog.version}</version>
+                        </annotationProcessorPath>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
