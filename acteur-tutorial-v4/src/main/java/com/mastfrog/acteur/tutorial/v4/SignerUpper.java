@@ -15,7 +15,6 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import java.io.IOException;
 
 /**
  * New user sign-up.
@@ -31,7 +30,7 @@ final class SignerUpper extends Acteur {
     static final String SIGN_UP_PATTERN = "^users/(.*?)/signup$";
 
     @Inject
-    SignerUpper(HttpEvent evt, @Named("users") DBCollection users, PasswordHasher hasher) throws IOException {
+    SignerUpper(HttpEvent evt, @Named("users") DBCollection users, PasswordHasher hasher) throws Exception {
         String password = evt.jsonContent(String.class);
         if (password.length() < 8) {
             badRequest("Password must be at least 8 characters");
