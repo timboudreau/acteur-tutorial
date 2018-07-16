@@ -112,12 +112,12 @@
                             <artifactId>giulius-annotation-processors</artifactId>
                             <version>${mastfrog.version}</version>
                         </annotationProcessorPath>
-<!--                        <annotationProcessorPath>
+                        <annotationProcessorPath>
                             <groupId>${project.groupId}</groupId>
-                            <artifactId>numble</artifactId>
+                            <artifactId>util-fileformat</artifactId>
                             <version>${mastfrog.version}</version>
                         </annotationProcessorPath>
--->                        <annotationProcessorPath>
+                        <annotationProcessorPath>
                             <groupId>${project.groupId}</groupId>
                             <artifactId>acteur-annotation-processors</artifactId>
                             <version>${mastfrog.version}</version>
