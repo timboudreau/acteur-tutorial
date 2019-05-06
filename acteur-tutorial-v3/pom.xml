@@ -7,6 +7,7 @@
         <version>2.5.0-dev</version>
     </parent>
     <artifactId>acteur-tutorial-v3</artifactId>
+    <url>https://github.com/timboudreau/acteur-tutorial</url>
     <name>acteur-tutorial-v3</name>
     <dependencies>
         <dependency>
@@ -27,10 +28,11 @@
         <url>https://github.com/timboudreau/acteur-tutorial/issues</url>
     </issueManagement>
     <scm>
-        <url>https://github.com/timboudreau/acteur-tutorial</url>
+        <url>https://github.com/timboudreau/acteur-tutorial.git</url>
         <connection>scm:git:https://github.com/timboudreau/acteur-tutorial.git</connection>
         <developerConnection>git@github.com/timboudreau/acteur-tutorial.git</developerConnection>
     </scm>
+    
     <organization>
         <name>Mastfrog Technologies</name>
         <url>https://mastfrog.com</url>
@@ -38,7 +40,8 @@
     <licenses>
         <license>
             <name>MIT</name>
-            <url>http://opensource.org/licenses/MIT</url>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
         </license>
     </licenses>
     <developers>
