@@ -22,7 +22,10 @@
             <artifactId>javassist</artifactId>
         </dependency>
     </dependencies>
-    <url>https://github.com/timboudreau/acteur-tutorial</url>
+    <issueManagement>
+        <system>Github</system>
+        <url>https://github.com/timboudreau/acteur-tutorial/issues</url>
+    </issueManagement>
     <scm>
         <url>https://github.com/timboudreau/acteur-tutorial</url>
         <connection>scm:git:https://github.com/timboudreau/acteur-tutorial.git</connection>

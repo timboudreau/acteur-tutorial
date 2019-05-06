@@ -52,7 +52,10 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </pluginRepository>
     </pluginRepositories>
-    <url>https://github.com/timboudreau/acteur-tutorial</url>
+    <issueManagement>
+        <system>Github</system>
+        <url>https://github.com/timboudreau/acteur-tutorial/issues</url>
+    </issueManagement>
     <scm>
         <url>https://github.com/timboudreau/acteur-tutorial</url>
         <connection>scm:git:https://github.com/timboudreau/acteur-tutorial.git</connection>
