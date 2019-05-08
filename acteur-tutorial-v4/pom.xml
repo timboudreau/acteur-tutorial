@@ -44,6 +44,11 @@
             <artifactId>guava</artifactId>
             <groupId>com.google.guava</groupId>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <issueManagement>
         <system>Github</system>
