@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.mastfrog</groupId>
         <artifactId>acteur-tutorial-parent</artifactId>
-        <version>2.6.10</version>
+        <version>2.6.11</version>
     </parent>
     <artifactId>acteur-tutorial-v4</artifactId>
     <url>https://github.com/timboudreau/acteur-tutorial</url>
