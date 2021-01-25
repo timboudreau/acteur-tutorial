@@ -5,6 +5,7 @@ import com.mastfrog.acteur.annotations.GenericApplicationModule;
 import com.mastfrog.acteur.mongo.MongoHarness;
 import com.mastfrog.acteur.tutorial.v4.TodoListAppTest.GAM;
 import com.mastfrog.giulius.tests.GuiceRunner;
+import com.mastfrog.giulius.tests.IfBinaryAvailable;
 import com.mastfrog.giulius.tests.TestWith;
 import com.mastfrog.netty.http.client.StateType;
 import com.mastfrog.netty.http.test.harness.TestHarness;
@@ -26,6 +27,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(GuiceRunner.class)
 @TestWith({TodoListApp.class, MongoHarness.Module.class, TestHarnessModule.class, GAM.class})
+@IfBinaryAvailable("mongod")
 public class TodoListAppTest {
 
     static class GAM extends GenericApplicationModule {
