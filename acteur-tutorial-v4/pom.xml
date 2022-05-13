@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>com.mastfrog</groupId>
         <artifactId>mastfrog-parent</artifactId>
-        <version>2.8.1</version>
+        <version>3.0.0-dev</version>
         <relativePath/>
     </parent>
     <artifactId>acteur-tutorial-v4</artifactId>
@@ -56,15 +59,18 @@
         <system>Github</system>
         <url>https://github.com/timboudreau/acteur-tutorial/issues</url>
     </issueManagement>
+
     <scm>
         <url>https://github.com/timboudreau/acteur-tutorial.git</url>
         <connection>scm:git:https://github.com/timboudreau/acteur-tutorial.git</connection>
         <developerConnection>git@github.com/timboudreau/acteur-tutorial.git</developerConnection>
     </scm>
+
     <organization>
         <name>Mastfrog Technologies</name>
         <url>https://mastfrog.com</url>
     </organization>
+
     <licenses>
         <license>
             <name>MIT</name>
@@ -72,6 +78,7 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
     <developers>
         <developer>
             <name>Tim Boudreau</name>
@@ -79,6 +86,7 @@
             <url>https://timboudreau.com</url>
         </developer>
     </developers>
+
     <build>
         <plugins>
             <plugin>
@@ -97,7 +105,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.7.0</version>
                 <configuration>
-                    <!--<fork>true</fork>-->
+                    <!-- <fork>true</fork> -->
                     <source>1.8</source>
                     <target>1.8</target>
                     <debug>true</debug>
@@ -111,7 +119,7 @@
                     <compilerArgument>-Xdiags:verbose</compilerArgument>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
-                    <!--<forceJavacCompilerUse>true</forceJavacCompilerUse>-->
+<!-- <forceJavacCompilerUse>true</forceJavacCompilerUse> -->
                     <annotationProcessorPaths>
                         <annotationProcessorPath>
                             <groupId>${project.groupId}</groupId>
