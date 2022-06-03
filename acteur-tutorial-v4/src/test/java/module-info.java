@@ -26,6 +26,9 @@ open module com.mastfrog.acteur.tutorial.v4 {
     // Sibling com.mastfrog/netty-http-test-harness-3.0.0-dev
     requires com.mastfrog.netty.http.test.harness;
 
+    // Inferred from test-source-scan
+    requires transitive junit;
+
     // derived from org.mongodb/mongo-java-driver-0.0.0-? in org/mongodb/mongo-java-driver/3.12.11/mongo-java-driver-3.12.11.pom
     requires transitive mongo.java.driver.3.12.11;
 
