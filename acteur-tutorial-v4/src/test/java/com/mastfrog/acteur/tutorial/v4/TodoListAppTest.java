@@ -1,12 +1,12 @@
 package com.mastfrog.acteur.tutorial.v4;
 
-import static com.google.common.net.MediaType.PLAIN_TEXT_UTF_8;
 import com.mastfrog.acteur.annotations.GenericApplicationModule;
 import com.mastfrog.acteur.mongo.MongoHarness;
 import com.mastfrog.acteur.tutorial.v4.TodoListAppTest.GAM;
 import com.mastfrog.giulius.tests.GuiceRunner;
 import com.mastfrog.giulius.tests.IfBinaryAvailable;
 import com.mastfrog.giulius.tests.TestWith;
+import com.mastfrog.mime.MimeType;
 import com.mastfrog.netty.http.client.StateType;
 import com.mastfrog.netty.http.test.harness.TestHarness;
 import com.mastfrog.netty.http.test.harness.TestHarnessModule;
@@ -53,7 +53,7 @@ public class TodoListAppTest {
         String username = "joe" + Long.toString(System.currentTimeMillis(), 36);
         harness.put("users", username, "signup")
                 .addQueryPair("displayName", "Joe Blow")
-                .setBody("password", PLAIN_TEXT_UTF_8)
+                .setBody("password", MimeType.PLAIN_TEXT_UTF_8)
                 .log()
                 .go()
                 .await()

@@ -35,10 +35,6 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>acteur-headers</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>acteur-mongo</artifactId>
             <scope>test</scope>
             <type>test-jar</type>
@@ -50,10 +46,6 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>giulius-tests</artifactId>
-        </dependency>
-        <dependency>
-            <artifactId>guava</artifactId>
-            <groupId>com.google.guava</groupId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
