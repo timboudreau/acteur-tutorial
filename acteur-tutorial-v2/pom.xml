@@ -20,18 +20,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
-        </dependency>
-        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>acteur-mongo</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.javassist</groupId>
-            <artifactId>javassist</artifactId>
-        </dependency>
-    </dependencies>
+        </dependencies>
     <issueManagement>
         <system>Github</system>
         <url>https://github.com/timboudreau/acteur-tutorial/issues</url>
